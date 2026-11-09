@@ -1,0 +1,233 @@
+<!doctype html><html lang="zh-CN"><meta charset="UTF-8"><title>SideAsk · 行间注</title><style>
+*{box-sizing:border-box}body{margin:0;background:#fafafa;color:#272727;font:16px -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;overflow:hidden}.menu{height:30px;border-bottom:1px solid #dedede;display:flex;align-items:center;gap:22px;padding:0 22px;font-size:13px;background:#ededed}.apple{font-size:16px}.menu time{margin-left:auto}.base{height:calc(100vh - 30px);display:flex}.rail{width:185px;background:#f1f1f1;border-right:1px solid #e5e5e5;padding:23px 18px;color:#686868;font-size:13px}.dots{display:flex;gap:8px;margin-bottom:49px}.dots b{height:12px;width:12px;background:#c3c3c3;border-radius:50%}.rail h5{font-size:12px;font-weight:500;color:#717171;margin:39px 0 13px}.rail p{margin:17px 0}.rail .current{background:#e2e2e2;border-radius:7px;padding:9px;margin-left:-9px}.source{width:100%;padding:20px 0 0 28px}.source header{font-weight:600}.article{margin:85px 0 0 clamp(35px,4.8vw,100px);max-width:643px;color:#464646;font-size:16.5px;line-height:1.85}.article h1{font-size:28px;line-height:1.3;letter-spacing:-.5px;color:#292929}.article h2{font-size:19px;margin:35px 0 8px}.article p{margin:10px 0}.math{font-family:"STIX Two Math",Georgia,"Times New Roman",serif;font-style:italic}.article .equ{font-size:24px;text-align:center;padding:14px}.marked{border-bottom:1px solid #747474;background:#ededed}</style><style>
+.note {
+  --red: #862e3b;
+  --fine: #dcd6ca;
+  --gutter: clamp(22px, 5.2cqi, 44px);
+  container-type: inline-size;
+  --serif: "Songti SC","STSong",serif;
+  position: absolute; top: 54px; right: 24px;
+  width: min(780px,calc(100vw - 48px)); height: min(800px,calc(100vh - 88px));
+  display: flex; flex-direction: column; overflow: hidden;
+  background: #f9f6ed; color: #332e29; border: 1px solid #ccc6ba;
+  border-radius: 14px; box-shadow: 0 9px 36px #332c2219,0 2px 6px #332c2210;
+}
+.note header {
+  display: flex; align-items: center; gap: 12px; flex: none; height: 54px;
+  margin: 0 31px; border-bottom: 1px solid var(--fine);
+  cursor: grab; touch-action: none; user-select: none;
+}
+.note header:active {cursor: grabbing}
+.brand {font: bold 21px Georgia,serif; letter-spacing: -1px}
+.monogram {font: italic 24px Georgia; color: var(--red)}
+.subtitle {font-size: 12px; color: #776f65; padding-left: 12px; border-left: 1px solid var(--fine)}
+.index-trigger {margin-left:auto;font-size:13px!important}.tool {margin-left:0}
+.note button,.reopen {cursor: pointer; font: inherit; color: var(--red); border: 0; background: transparent}
+.note button:focus-visible,.reopen:focus-visible {outline: 2px solid var(--red); outline-offset: 3px}
+.paper {
+  flex: 1; min-height: 0; overflow: auto; overflow-anchor: none;
+  padding: 29px max(var(--gutter),calc((100% - 42em)/2)) 28px; font: 17px/1.85 var(--serif);
+}
+.paper p {margin: 0 0 .78em}
+.question {margin: 0 0 22px}
+.question h1 {font: 600 29px/1.4 var(--serif); margin: 0 0 8px}
+.question blockquote {margin: 0; padding-left: 12px; border-left: 2px solid #bd9393; color: #685a51}
+.selected {color: var(--red); background: linear-gradient(transparent 64%,#ead9cf 64%); border-radius: 1px}
+.note .fold {font: 13px/1.5 -apple-system,"PingFang SC",sans-serif; padding: 4px 0}
+.annotated-end {white-space: nowrap}
+.note .mark {
+  display: inline-flex; align-items: center; gap: .22em; margin-inline-start: .16em;
+  padding: 0 .35em; border-radius: 4px; background: #efe6dc;
+  font: 500 13px/1.55 var(--serif); vertical-align: .08em;
+}
+.mark::before {
+  content: ""; width: 4px; height: 4px; border: solid currentColor;
+  border-width: 0 1px 1px 0; transform: rotate(-45deg); margin-right: 2px;
+  transition: transform 120ms ease;
+}
+.mark:hover,.mark:focus-visible,.mark[aria-expanded="true"] {background: #e9dcd2}
+.mark[aria-expanded="true"]::before {transform: rotate(45deg)}
+.second {padding: 16px 0 10px; margin: 0 0 16px; border-block: 1px solid #d4b8af}
+.depth {font: 16px/1 Georgia,serif; letter-spacing: .08em; color: var(--red)}
+.branch-heading .depth {font-size: 18px}
+.branch-heading {display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px}
+.branch-heading h2 {margin: 0; font: 600 22px/1.5 var(--serif)}
+.second .step {margin-top: 22px}
+.second h3 {font-size: 19px; margin: 0 0 6px}
+.radial-equations {margin: 12px 0; text-align: center}
+.formula {font: italic 22px/1.8 "STIX Two Math","Times New Roman",serif; font-variant-numeric: lining-nums}
+.formula sub {font-size: .62em}
+.note .pin {
+  flex: none; display: flex; align-items: center; gap: 12px; min-width: 0;
+  height: 34px; margin: 0 var(--gutter); border-bottom: 1px solid #e3dcd0;
+}
+.pin-source {
+  min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font: 14px/1.5 var(--serif); color: #675c52;
+}
+.pin .fold {flex: none; margin-left: auto; font-size: 12px; color: #756259}
+.pin .fold:hover {color: var(--red)}
+.composer {flex: none; margin: 0 var(--gutter); padding: 7px 0 13px; border-top: 1px solid var(--fine)}
+.ref {display: flex; align-items: center; gap: 8px; height: 23px; font-size: 13px; color: #645c51}
+.ref::before {content: ""; width: 2px; height: 12px; background: #bd9393}
+.ref input {flex: 1; min-width: 0; font: inherit; color: inherit; border: 0; background: transparent}
+.note .clear-ref {padding: 0 5px; font-size: 15px}
+.clear-ref[hidden] {display: none}
+.composer textarea {display: block; resize: none; width: 100%; height: 38px; margin-top: 3px; padding: 7px 1px; font: 16px/1.5 var(--serif); color: inherit; border: 0; background: transparent}
+.composer :is(input,textarea):focus-visible {outline: 1px solid #ba9294; outline-offset: 2px; border-radius: 3px}
+.note .tool {position:relative; z-index:3; display:grid; place-items:center; width:26px; height:26px; color:#786f65; border-radius:50%}
+.tool:hover {background:#efe8dd}
+@media (prefers-reduced-motion: no-preference) {
+  .second:not([hidden]) .branch-heading {animation: ink-in 160ms ease-out}
+  .pin:not([hidden]) {animation: ink-in 110ms ease-out}
+  @keyframes ink-in {from {opacity:.35} to {opacity:1}}
+}
+@media (prefers-reduced-motion: reduce) {.mark::before {transition:none}}
+.grip {position: absolute; left: 0; top: 0; bottom: 0; width: 10px; cursor: ew-resize; touch-action: none}
+.reopen {position: absolute; right: 16px; top: 46%; background: #f9f6ed; border: 1px solid #ccc6ba; border-radius: 9px; padding: 12px}
+.note[hidden],.pin[hidden],.second[hidden],.reopen[hidden] {display: none}
+
+[hidden] {display:none!important}
+#outline {position:absolute;z-index:5;right:24px;top:48px;width:min(320px,85%);max-height:65%;overflow:auto;background:#fffdf7;border:1px solid var(--fine);padding:12px;border-radius:10px;box-shadow:0 8px 22px #30251822}
+#outline .entry {display:flex;align-items:center;gap:5px}
+#outline .entry button {text-align:left;color:inherit;font-size:14px;padding:6px 4px}
+#outline .entry [aria-current=true] {color:var(--red)}
+#outline .new-root {border-top:1px solid var(--fine);margin-top:8px;width:100%;padding:8px;text-align:left;font-size:13px}
+#ask-selection {position:absolute;z-index:6;background:#48372f;color:white;border-radius:6px;padding:5px 10px;font-size:13px}
+.composer {position:relative}
+.composer .compose-target {font:12px/1.6 -apple-system,sans-serif;color:var(--red);margin-right:6px}
+.entry [aria-current=true]::after {content:" · 当前";font-size:11px}
+.entry [data-ancestor=true] {font-weight:600}
+.composer textarea {padding-right:145px}
+.compose-actions {position:absolute;bottom:18px;right:0;display:flex;gap:4px}
+.note .compose-actions button {font:13px -apple-system,sans-serif;padding:3px 5px}
+.note #send:disabled {opacity:.35}
+.note #send:not(:disabled) {background:#efe4da;border-radius:4px}
+.example-reply::before {content:"示例回答";display:block;color:#776c60;font:11px/1.7 -apple-system,sans-serif}
+.turn-title {font-weight:600}
+.turn-quote {font-size:14px;color:#76675b}
+@container (max-width:520px) {.index-trigger {font-size:12px!important}.note header {gap:7px;margin-inline:20px}.subtitle {max-width:9em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+</style>
+<button class="reopen" hidden>打开 SideAsk</button>
+<section class="note" aria-label="SideAsk 行间注"><header title="拖动标题栏移动浮页"><button type="button" class="library-trigger" title="" aria-label="打开 SideAsk 探索管理"><img src="SideAsk-header.png" width="28" height="28" alt="" draggable="false"><span class="brand">SideAsk</span></button><button type="button" class="subtitle" aria-controls="recent-explorations" aria-expanded="false" title=""></button><button class="index-trigger" aria-expanded="false" aria-controls="outline">本篇疑问</button><button class="tool" id="hide" aria-label="收起浮页">×</button></header>
+<div class="pin" hidden><span class="depth" role="img" aria-label="第二层追问" title="第二层追问">Ⅱ</span><span class="pin-source">「电场沿各点的径向」</span><button class="fold" title="收起此注并回到原句">↶ 回到原句</button></div>
+<nav id="outline" aria-label="本篇疑问" hidden></nav>
+<button id="ask-selection" hidden>再问</button>
+<div class="paper"></div><footer class="composer"><div class="ref"><span class="compose-target" hidden></span><input aria-label="追问引用" placeholder="＋ 添加引用"><button class="clear-ref" aria-label="清除引用" hidden>×</button></div><textarea aria-label="追问草稿" placeholder="继续追问…"></textarea><div class="compose-actions"><button id="cancel-new" hidden>取消</button><button id="new-note">单独问</button><button id="send" disabled>发送 ↑</button></div></footer><div class="grip" title="拖动左边缘调整宽度"></div></section>
+<script>
+const get = selector => document.querySelector(selector);
+const panel = get('.note'), paper = get('.paper');
+const pinned = get('.pin'), launcher = get('.reopen'), titleBar = get('.note header');
+function showPanel(visible) {
+  panel.hidden = !visible;
+  launcher.hidden = visible;
+  if (visible) refreshSource();
+}
+get('#hide').onclick = () => showPanel(false);
+launcher.onclick = () => showPanel(true);
+document.addEventListener('pointerdown', event => {
+  // Native windows handle outside clicks in AppKit. This fallback is for the desktop mockup.
+  if (window.webkit?.messageHandlers?.windowAction || document.querySelector('dialog[open]')) return;
+  if (!panel.hidden && !panel.contains(event.target)) showPanel(false);
+});
+const preference = 'sideask-reading-window:' + screen.width + 'x' + screen.height;
+function constrain(value, low, high) {
+  return Math.min(Math.max(value, low), high);
+}
+function position(x, y, width) {
+  const margin = 12;
+  const maxWidth = innerWidth - margin * 2;
+  width = constrain(width, Math.min(440, maxWidth), maxWidth);
+  panel.style.width = width + 'px';
+  panel.style.left = constrain(x, margin, innerWidth - width - margin) + 'px';
+  panel.style.top = constrain(y, margin, innerHeight - panel.offsetHeight - margin) + 'px';
+  panel.style.right = 'auto';
+}
+try {
+  const saved = JSON.parse(localStorage.getItem(preference));
+  if (Array.isArray(saved) && saved.length === 3 && saved.every(Number.isFinite)) position(...saved);
+} catch {}
+function attachDrag(handle, resizing) {
+  handle.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.target.closest('button,[role=button]')) return;
+    event.preventDefault();
+    const box = panel.getBoundingClientRect(), startX = event.clientX, startY = event.clientY;
+    handle.setPointerCapture(event.pointerId);
+    handle.onpointermove = move => {
+      const dx = move.clientX - startX;
+      if (resizing) {
+        const width = constrain(box.width - dx, Math.min(440,box.right-12), box.right-12);
+        position(box.right - width,box.top,width);
+      } else position(box.x + dx,box.y + move.clientY - startY,box.width);
+      refreshSource();
+    };
+    handle.onlostpointercapture = () => {
+      handle.onpointermove = null;
+      const {x, y, width} = panel.getBoundingClientRect();
+      try { localStorage.setItem(preference, JSON.stringify([x,y,width])); } catch {}
+    };
+  });
+}
+attachDrag(titleBar, false);
+attachDrag(get('.grip'), true);
+window.addEventListener('resize', () => {
+  if (panel.hidden) return;
+  const {x,y,width} = panel.getBoundingClientRect();
+  position(x,y,width);
+  refreshSource();
+});
+</script>
+<link rel="stylesheet" href="katex.min.css">
+<style>.note {inset:0!important;width:100vw!important;height:100vh!important;border-radius:10px}.grip{display:none}.live-answer pre{overflow:auto}.note .import-button {margin-left:auto;font-size:13px;white-space:nowrap}.note .index-trigger {margin-left:0;white-space:nowrap}
+.import-editor {width:min(540px,85vw);border:1px solid #cec4b6;border-radius:12px;background:#f9f6ed;color:#332e29;padding:22px}
+.import-editor::backdrop {background:#332e2920}
+.import-editor h2 {font:600 23px "Songti SC",serif;margin:0 0 14px}
+.import-editor label {font-size:14px}
+.import-editor textarea {box-sizing:border-box;display:block;margin:8px 0 14px;width:100%;height:min(40vh,280px);padding:10px;resize:none;font:17px/1.65 "Songti SC",serif}
+.import-editor form>div {display:flex;justify-content:flex-end;gap:8px}
+.subtitle {min-width:0;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.note header {gap:10px}.note header button {flex:none}.note header .tool {margin-left:0}
+.note header:has(.import-button[hidden]) .tool {margin-left:auto}
+.note header .index-trigger {color:#60584d}.import-editor textarea {background:#fffdf7;border:1px solid #cfc6b7;border-radius:6px}.import-editor button {padding:5px 12px;border:0;border-radius:5px;cursor:pointer}.confirm-import:not(:disabled),.note .start-reading button {background:#793846;color:white}
+.start-reading {margin:clamp(28px,8vh,85px) auto;max-width:450px}
+.start-reading h1 {margin:0;font:600 30px/1.45 var(--serif)}
+.start-reading p {margin:12px 0 24px;color:#6e6357}
+.note .start-reading button {font:14px -apple-system,sans-serif;border-radius:7px;padding:10px 16px}
+.background-text {max-height:54vh;overflow:auto;white-space:pre-wrap;font:17px/1.8 "Songti SC",serif}
+.import-editor form>.background-text {display:block}
+.note .start-reading button:only-of-type {cursor:pointer}
+.paper,.background-text {font-size:15px}.question h1 {font-size:25px}.branch-heading h2 {font-size:19px}.start-reading h1 {font-size:26px}.composer textarea,.import-editor textarea {font-size:15px}.live-answer :is(h1,h2,h3) {font-size:1.16em}
+.note header:has(.import-button[hidden]) .tool {margin-left:0}
+.note header .index-trigger {margin-left:auto!important}.note header .page-menu-button {font:600 19px/1 Georgia;color:#73655c}.note header .subtitle {max-width:55%}
+.page-menu {position:absolute;right:38px;top:47px;z-index:6;background:#fffdf8;border:1px solid var(--fine);border-radius:8px;padding:5px;box-shadow:0 6px 20px #38251818}
+.note .page-menu button {display:block;text-align:left;width:100%;padding:7px 12px;font:13px -apple-system,sans-serif}
+.page-menu button:hover {background:#f3ece2}
+.question,.branch-heading {position:relative;padding-right:32px}
+.note .remove-question {position:absolute;top:4px;right:0;color:#766b63;font:12px -apple-system,sans-serif;opacity:0}
+:is(.question,.branch-heading):hover .remove-question,.remove-question:focus-visible {opacity:1}
+.note header:has(.index-trigger[hidden]) .page-menu-button {margin-left:auto}
+.action-editor input {width:100%;font:16px var(--serif);padding:8px}
+.action-editor footer {display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+body.reading-pair {--parent-col:min(var(--parent-width,55vw),calc(100vw - 345px));background:#dcd7ce}
+.reading-pair .note {width:calc(100vw - var(--parent-col) - 8px)!important;border:1px solid #c8b5a6}
+.source-card {position:absolute;right:0;inset-block:0;width:var(--parent-col);display:flex;flex-direction:column;background:#faf7ef;border:1px solid #d6cfc3;border-radius:12px;overflow:hidden}
+.source-heading {padding:18px 30px;color:#75665a;font-size:13px;border-bottom:1px solid #e3dbcf}
+.source-paper {overflow:auto;padding:29px max(clamp(22px,5.2%,44px),calc((100% - 42em)/2)) 28px;font:15px/1.85 "Songti SC",serif;color:#332e29;flex:1}
+.source-paper p {margin:0 0 .78em}
+.reading-pair .paper>.second,.source-paper>.second {border:0;padding:0}
+.branch-source {margin:0 0 20px;padding-left:10px;border-left:2px solid #cbb6a8;color:#74685c;font-size:14px}
+.note .mark,.source-card .mark {cursor:pointer;border:0;background:transparent;color:#885047;font:12px/1.6 "Songti SC",serif;padding:0 3px;border-bottom:1px dotted #bfa296;border-radius:0}
+.source-card .mark::before {display:none}
+.source-card .remove-question {display:none}
+@media(max-width:700px){.reading-pair .source-card{display:none}.reading-pair .note{width:100vw!important}}
+.note header .index-trigger[aria-expanded=true] {color:var(--red)}
+.annotation-window body {background:transparent}
+.annotation-window .note {background:rgba(251,248,241,.88);border:1px solid rgba(102,83,69,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.94)}
+.annotation-window .paper {background:#faf7ef}
+.annotation-window .note header {margin:0;padding:0 var(--gutter);height:43px}
+.annotation-window .brand {font-size:17px}
+.annotation-window .note .pin {height:31px}
+.annotation-window .composer textarea {padding-right:110px}
+</style><link rel="stylesheet" href="reading.css">
+<script src="marked.umd.js"></script><script src="katex.min.js"></script>
+<script src="import-form.js"></script><script src="native.js"></script><script src="探索.js"></script></html>

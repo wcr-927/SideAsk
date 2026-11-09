@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>探索管理台 · SideAsk</title><link rel="stylesheet" href="reading.css"><link rel="stylesheet" href="console.css">
+<link rel="stylesheet" href="library.css">
+<body><div class="window">
+<main id="dashboard"><section class="overview"><div class="headline"><h1>近况</h1><div class="switcher" aria-label="统计周期"><button data-days="7">近 7 天</button><button data-days="30">近 30 天</button></div></div>
+<div class="stats"><div><label>累计探索</label><strong id="count"></strong></div><div><label id="activeLabel"></label><div class="activity"><strong id="activity"></strong><div id="bars"></div></div></div><div><label id="usageLabel"></label><strong id="usage"></strong></div><div><label>默认 AI 接入</label><strong id="provider"></strong></div></div></section>
+<section class="library"><div class="listhead"><div class="library-kinds" role="tablist" aria-label="对话列表">
+<button id="list-exploration" role="tab" aria-controls="rows" data-list-kind="exploration" aria-selected="true">探索</button>
+<button id="list-quick" role="tab" aria-controls="rows" data-list-kind="quick" aria-selected="false" tabindex="-1">随问</button>
+<button id="list-archive" role="tab" aria-controls="rows" data-list-kind="archive" aria-selected="false" tabindex="-1">归档</button>
+</div><label class="search"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.65" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4" stroke-linecap="round"/></svg><input id="search" type="search" placeholder="搜索探索" aria-label="搜索探索"></label></div>
+<div id="rows" role="tabpanel" aria-labelledby="list-exploration"></div></section></main>
+<main id="preferences" aria-labelledby="preferences-title" hidden>
+  <div class="pref-heading">
+    <h1 id="preferences-title" tabindex="-1">设置</h1>
+    <button id="backToLibrary" class="back-link">返回</button>
+  </div>
+  <section class="floating-prefs" aria-labelledby="floating-title">
+    <div class="shortcut-pref">
+      <div><h2 id="floating-title">浮页快捷键</h2><p id="shortcutHint" role="status">点击键帽，更换呼出与收起浮页的快捷键。</p></div>
+      <button type="button" id="recordShortcut" class="keycaps" aria-label="更换浮页快捷键" aria-describedby="shortcutHint" aria-pressed="false" disabled></button>
+    </div>
+    <label class="quote-pref" for="clipboardQuote">
+      <span><strong>自动引用复制的文字</strong><small id="clipboardHint">唤出浮页时，将新复制的文字带入引用栏。</small></span>
+      <input id="clipboardQuote" type="checkbox" role="switch" aria-describedby="clipboardHint" disabled>
+    </label>
+  </section>
+  <section class="provider-pref" aria-labelledby="ai-title">
+    <div class="provider-card">
+      <div class="provider-detail">
+        <span class="cli-icon" aria-hidden="true">›_</span>
+        <div><h2 id="ai-title">Codex</h2>
+          <div class="provider-caption"><p>使用本机 Codex CLI 的登录配置</p><span id="modelSaved" role="status"></span></div>
+        </div>
+      </div>
+      <div class="model-options">
+        <div class="choice-field"><span id="modelLabel">模型</span><button type="button" class="choice-surface" id="modelChoice" role="combobox" aria-labelledby="modelLabel modelValue" aria-controls="choiceList" aria-expanded="false" aria-haspopup="listbox" disabled><span id="modelValue">读取中…</span></button></div>
+        <div class="choice-field"><span id="effortLabel">推理强度</span><button type="button" class="choice-surface" id="effortChoice" role="combobox" aria-labelledby="effortLabel effortValue" aria-controls="choiceList" aria-expanded="false" aria-haspopup="listbox" disabled><span id="effortValue">读取中…</span></button></div>
+        <button id="resetModel" type="button" aria-label="恢复默认" hidden>
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v4.5h4.5"/><path d="M4.3 8a6.1 6.1 0 1 1 .6 5.4"/></svg>
+        </button>
+      </div>
+      <div class="model-feedback"><span id="modelStatus" role="status"></span><button id="reloadModels" hidden>重新读取</button></div>
+    </div>
+  </section>
+</main></div>
+<div id="createMenu" popover role="group" aria-label="新建" tabindex="-1">
+  <button type="button" data-create="exploration"><strong>探索</strong><small>从一篇长回答开始</small></button>
+  <button type="button" data-create="quick"><strong>随问</strong><small>直接问一个问题</small></button>
+</div>
+<div id="choiceList" role="listbox" hidden></div>
+<div id="toast" role="status" hidden></div>
+<script src="list-view.js"></script><script src="import-form.js"></script><script src="library.js"></script></body></html>
