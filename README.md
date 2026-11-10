@@ -1,5 +1,7 @@
 # SideAsk
 
+**[下载 macOS 安装包（DMG · Apple Silicon）](https://github.com/wcr-927/SideAsk/releases/latest/download/SideAsk-AppleSilicon.dmg)** · [所有版本](https://github.com/wcr-927/SideAsk/releases)
+
 按 **⌥ Option + 空格**，在正在使用的 Mac 应用旁呼出一张 AI 聊天卡片。用完点回原窗口，就能接着手头的事。
 
 | 想做什么 | 选择 |
@@ -7,20 +9,27 @@
 | 临时碰到一个概念、想问一句话，或者围绕同一个话题连续聊几轮 | **随问**。直接输入就能开始，也可以带上一段引用。 |
 | 正在读一篇长回答，想补全某步推导，又想记住每个疑问来自哪一段 | **探索**。把长回答作为背景，按原句展开旁注，还能关联 PDF、Word 和 PPT 资料。 |
 
-SideAsk 通过本机已登录的 OpenAI Codex CLI 流式显示回答，支持 Markdown、数学公式和代码。当前提供 macOS 源码构建方式。已验证的环境为 Apple Silicon、macOS 27.2 和独立 Codex CLI 0.162.1。
+SideAsk 通过本机已登录的 OpenAI Codex CLI 流式显示回答，支持 Markdown、数学公式和代码。安装包的系统目标为 macOS 26.0 起，实际验收环境为 Apple Silicon、macOS 27.2 和独立 Codex CLI 0.162.1。
 
 ## 安装与登录
 
-1. **准备 Mac 开发工具。** 已安装 Xcode 或命令行工具的用户，可以在终端运行 `swiftc --version` 和 `/usr/bin/python3 --version` 确认。首次安装命令行工具可运行 `xcode-select --install`。
-2. **准备 Codex。** 按官方说明安装 Codex CLI，在终端运行 `codex login`，按提示使用自己的账户登录，再运行 `codex login status` 确认。SideAsk 会复用本机登录，提问和自动生成探索标题会使用相应的模型额度。[Codex CLI 安装指南](https://developers.openai.com/codex/cli/)
-3. **下载并构建 SideAsk。** 在 GitHub 仓库页面选择 **Code → Download ZIP** 并解压。在终端输入 `cd `（末尾留一个空格），把解压后的项目文件夹拖进终端，按回车。然后运行：
+1. **下载安装包。** 点击上方的 DMG 链接，双击下载的文件，将 **SideAsk** 拖入旁边的 **Applications（应用程序）**，然后从「应用程序」中打开。当前版本采用本地签名，尚未经过 Apple 公证，首次打开时 macOS 可能提示无法验证开发者。[Apple 关于打开应用的说明](https://support.apple.com/zh-cn/102445)
+2. **准备 Codex。** SideAsk 使用本机已登录的 Codex。使用独立 CLI 时，先在终端运行 `codex login`，再用 `codex login status` 确认。提问和自动生成探索标题会使用相应的模型额度。[Codex CLI 安装指南](https://developers.openai.com/codex/cli/)
+3. **首次运行。** 打开管理台，点 **＋ 新建 → 随问** 测试提问。当前版本通过 `/usr/bin/python3` 调用 Codex 和处理资料；如果系统提示缺少开发者工具，按提示安装命令行工具即可。使用 DMG 可以跳过编译，也无需下载完整 Xcode。
 
-   ```sh
-   ./scripts/build.sh
-   open build/SideAsk.app
-   ```
+<details>
+<summary>从源码构建</summary>
 
-首次打开会看到管理台。若要长期使用，把 `build` 文件夹里的 `SideAsk.app` 拖到「应用程序」。
+安装 Xcode 或 macOS 命令行工具（`xcode-select --install`），下载并解压仓库源码，在项目根目录运行：
+
+```sh
+./scripts/build.sh
+open build/SideAsk.app
+```
+
+在 Apple Silicon 上运行 `./scripts/package-dmg.sh` 可生成 `build/SideAsk-AppleSilicon.dmg`。
+
+</details>
 
 ## 随问：从一个问题开始
 
@@ -51,10 +60,10 @@ SideAsk 通过本机已登录的 OpenAI Codex CLI 流式显示回答，支持 Ma
 ## 遇到问题
 
 - **快捷键没反应。** 点 macOS 菜单栏里的 **S** 打开浮页或管理台。若组合键已被占用，进入设置，点击快捷键键帽重新录入。
-- **提示找不到 Codex。** 先在终端运行 `codex --version` 和 `codex login status`。如果终端能找到 CLI，而应用找不到，可在项目目录用下面的命令启动，让 SideAsk 使用同一个可执行文件：
+- **提示找不到 Codex。** 先在终端运行 `codex --version` 和 `codex login status`。如果终端能找到 CLI，而应用找不到，通过 DMG 安装后可用下面的命令启动，让 SideAsk 使用同一个可执行文件：
 
   ```sh
-  SIDEASK_CODEX="$(command -v codex)" ./build/SideAsk.app/Contents/MacOS/SideAsk
+  SIDEASK_CODEX="$(command -v codex)" /Applications/SideAsk.app/Contents/MacOS/SideAsk
   ```
 
 ## 开发与许可
